@@ -68,8 +68,9 @@ func BufferFromSlice[T any](slice []T) *RingBuffer[T] {
 	for i := uint64(0); i < size; i++ {
 		if i < origLen {
 			buf[i].step.Store(i + 1)
-			val := slice[i]
-			buf[i].ptr.Store(&val)
+			p := new(T)
+			*p = slice[i]
+			buf[i].ptr.Store(p)
 		} else {
 			buf[i].step.Store(i)
 		}
